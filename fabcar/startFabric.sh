@@ -27,6 +27,9 @@ elif [ "$CC_SRC_LANGUAGE" = "typescript" ]; then
 	npm run build
 	popd
 	echo Finished compiling TypeScript code into JavaScript
+elif [ "$CC_SRC_LANGUAGE" = "java" ]; then
+	CC_RUNTIME_LANGUAGE=java
+	CC_SRC_PATH=/opt/gopath/src/github.com/fabcar/java
 else
 	echo The chaincode language ${CC_SRC_LANGUAGE} is not supported by this script
 	echo Supported chaincode languages are: go, javascript, and typescript
@@ -104,5 +107,27 @@ TypeScript:
   You can run the query application as follows. By default, the query application will
   return all cars, but you can update the application to evaluate other transactions:
     node dist/query
+
+Java:
+
+  Start by changing into the "java" directory:
+    cd java
+
+  Next, compile the Java code:
+    ./gradlew shadowJar
+
+  Then run the following applications to enroll the admin user, and register a new user
+  called user1 which will be used by the other applications to interact with the deployed
+  FabCar contract:
+    java -jar ./build/libs/fabcar.jar org.example.EnrollAdmin
+    java -jar ./build/libs/fabcar.jar org.example.RegisterUser
+
+  You can run the invoke application as follows. By default, the invoke application will
+  create a new car, but you can update the application to submit other transactions:
+    java -jar ./build/libs/fabcar.jar org.example.Invoke
+
+  You can run the query application as follows. By default, the query application will
+  return all cars, but you can update the application to evaluate other transactions:
+    java -jar ./build/libs/fabcar.jar org.example.Query
 
 EOF

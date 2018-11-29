@@ -1,0 +1,3 @@
+/.gradle/
+wallet
+!wallet/.gitkeep
